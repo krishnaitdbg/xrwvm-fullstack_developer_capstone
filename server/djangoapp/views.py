@@ -48,6 +48,7 @@ def logout_request(request):
 # Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
+    # context = {}
     data = json.loads(request.body)
     username = data['userName']
     password = data['password']
@@ -122,7 +123,7 @@ def add_review(request):
             return JsonResponse({"status": 200})
         except Exception as e:
             return JsonResponse({
-                "status": 401, 
+                "status": 401,
                 "message": f"Error in posting review: {str(e)}"
             })
     else:
