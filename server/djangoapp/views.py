@@ -55,7 +55,7 @@ def registration(request):
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
-    
+
     username_exist = User.objects.filter(username=username).exists()
 
     if username_exist:
