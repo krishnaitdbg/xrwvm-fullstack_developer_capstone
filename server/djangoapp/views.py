@@ -1,12 +1,7 @@
 # Uncomment the required imports before adding the code
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
-from django.contrib import messages
-from datetime import datetime
 
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -41,9 +36,12 @@ def login_user(request):
 
 # Create a `logout_request` view to handle sign out request
 def logout_request(request):
-    logout(request)
-    data = {"userName":""}
-    return JsonResponse(data)
+    if request.method == "POST":
+        logout(request)
+        data = {"message": "Successfully logged out", "userName": ""}
+        return JsonResponse(data)
+    else:
+        return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 # Create a `registration` view to handle sign up request
@@ -85,7 +83,7 @@ def get_dealerships(request, state="All"):
     if(state == "All"):
         endpoint = "/fetchDealers"
     else:
-        endpoint = "/fetchDealers/"+state
+        endpoint = "/fetchDealers/" + state
     dealerships = get_request(endpoint)
     return JsonResponse({"status":200,"dealers":dealerships})
 
@@ -95,9 +93,10 @@ def get_dealer_reviews(request,dealer_id):
     if (dealer_id):
         endpoint = "/fetchReviews/dealer/"+str(dealer_id)
         reviews = get_request(endpoint)
-        for dealer_review in reviews:
-            response = analyze_review_sentiments(dealer_review['review'])
-            dealer_review['sentiment'] = response['sentiment']
+        for review_detail in reviews:
+            response = analyze_review_sentiments(review_detail['review'])
+            print(response)
+            review_detail['sentiment'] = response['sentiment']
         return JsonResponse({"status":200,"reviews":reviews})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})

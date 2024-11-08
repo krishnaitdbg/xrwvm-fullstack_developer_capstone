@@ -7,7 +7,7 @@ import review_icon from "../assets/reviewicon.png"
 const Dealers = () => {
   const [dealersList, setDealersList] = useState([]);
   // let [state, setState] = useState("")
-  let [states, setStates] = useState([])
+  let [states, setStates] = useState([]);
 
   // let root_url = window.location.origin
   let dealer_url ="/djangoapp/get_dealers";
@@ -41,7 +41,7 @@ const Dealers = () => {
       setStates(Array.from(new Set(states)))
       setDealersList(all_dealers)
     }
-  }
+  };
   useEffect(() => {
     get_dealers();
   },[]);  
@@ -51,7 +51,6 @@ let isLoggedIn = sessionStorage.getItem("username") != null ? true : false;
 return(
   <div>
       <Header/>
-
      <table className='table'>
       <tr>
       <th>ID</th>
@@ -90,7 +89,7 @@ return(
       ))}
      </table>;
   </div>
-)
-}
+);
+};
 
-export default Dealers
+export default Dealers;
